@@ -9,6 +9,7 @@ import (
 
 func main() {
 	var farm []Animal
+	var farm2 []NamedEntity
 	fmt.Println("Enter command ('newanimal' or 'query')")
 	fmt.Println("e.g. 'newanimal ivan cow'")
 	fmt.Println("     'query ivan eat'")
@@ -28,22 +29,34 @@ func main() {
 				a = &Snake{tokens[1]}
 			}
 			farm = append(farm, a)
+			farm2 = append(farm2, a)
 			fmt.Println("Created it!")
 		} else if tokens[0] == "query" {
-			var a Animal
-			for _, cur := range farm {
+
+			var ne NamedEntity
+			for _, cur := range farm2 {
 				if cur.Name() == tokens[1] {
-					a = cur
+					ne = cur
 					break
 				}
 			}
-
-			if tokens[2] == "eat" {
-				a.Eat()
-			} else if tokens[2] == "move" {
-				a.Move()
-			} else if tokens[2] == "speak" {
-				a.Speak()
+			if ne == nil {
+				fmt.Println("Couldn't find that name :(")
+				continue
+			}
+			var a, ok = ne.(Animal)
+			if ok {
+				if tokens[2] == "eat" {
+					a.Eat()
+				} else if tokens[2] == "move" {
+					a.Move()
+				} else if tokens[2] == "speak" {
+					a.Speak()
+				} else {
+					fmt.Println("Don't know this action :(")
+				}
+			} else {
+				fmt.Println("This is not an animal :(")
 			}
 		} else {
 			fmt.Println("Invalid command :( ")
@@ -52,6 +65,10 @@ func main() {
 
 	}
 
+}
+
+type NamedEntity interface {
+	Name() string
 }
 
 type Animal interface {
