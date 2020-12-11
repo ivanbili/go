@@ -8,8 +8,7 @@ import (
 )
 
 func main() {
-	var farm []Animal
-	var farm2 []NamedEntity
+	var farm []NamedEntity
 	fmt.Println("Enter command ('newanimal' or 'query')")
 	fmt.Println("e.g. 'newanimal ivan cow'")
 	fmt.Println("     'query ivan eat'")
@@ -20,21 +19,20 @@ func main() {
 		tokens := strings.Split(scanner.Text(), " ")
 
 		if tokens[0] == "newanimal" {
-			var a Animal
+			var ne NamedEntity
 			if tokens[2] == "cow" {
-				a = &Cow{tokens[1]}
+				ne = &Cow{tokens[1]}
 			} else if tokens[2] == "bird" {
-				a = &Bird{tokens[1]}
+				ne = &Bird{tokens[1]}
 			} else if tokens[2] == "snake" {
-				a = &Snake{tokens[1]}
+				ne = &Snake{tokens[1]}
 			}
-			farm = append(farm, a)
-			farm2 = append(farm2, a)
+			farm = append(farm, ne)
 			fmt.Println("Created it!")
 		} else if tokens[0] == "query" {
 
 			var ne NamedEntity
-			for _, cur := range farm2 {
+			for _, cur := range farm {
 				if cur.Name() == tokens[1] {
 					ne = cur
 					break
@@ -62,9 +60,7 @@ func main() {
 			fmt.Println("Invalid command :( ")
 			continue
 		}
-
 	}
-
 }
 
 type NamedEntity interface {
@@ -75,7 +71,6 @@ type Animal interface {
 	Eat()
 	Move()
 	Speak()
-	Name() string
 }
 
 type Cow struct{ name string }
