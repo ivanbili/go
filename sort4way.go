@@ -10,14 +10,10 @@ import (
 )
 
 func main() {
-	fmt.Println("Enter up to 10 integers separated by spaces:")
+	fmt.Println("Enter integers separated by spaces:")
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	tokens := strings.Split(scanner.Text(), " ")
-	if len(tokens) > 10 {
-		fmt.Println("You entered more than 10 ints :(")
-		return
-	}
 	var numbers = make([]int, len(tokens))
 	for i, int_str := range tokens {
 		num, _ := strconv.Atoi(int_str)
