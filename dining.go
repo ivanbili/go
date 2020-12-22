@@ -3,7 +3,6 @@ package main
 import "fmt"
 import "sync"
 import "time"
-import "math/rand"
 
 var permission chan bool
 var finished chan bool
@@ -18,13 +17,8 @@ type Philo struct {
 func (p Philo) eat(num int) {
 	for i := 0; i < 3; i++ {
 		<-permission
-		if rand.Int()%2 == 0 {
-			p.leftCS.Lock()
-			p.rightCS.Lock()
-		} else {
-			p.rightCS.Lock()
-			p.leftCS.Lock()
-		}
+		p.leftCS.Lock()
+		p.rightCS.Lock()
 		fmt.Println("starting to eat", num+1)
 		time.Sleep(100 * time.Millisecond)
 		fmt.Println("finishing eating", num+1)
