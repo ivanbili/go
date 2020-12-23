@@ -26,22 +26,23 @@ func (p Philo) eat(num int) {
 		p.leftCS.Unlock()
 		finished <- true
 	}
+	fmt.Println("philosopher full ", num+1)
 	wg.Done()
 }
 
 func host(max_eaters int) {
-	cur_eaters := 0
-	for {
-		select {
-		case <-finished:
-			cur_eaters--
-		default:
-			if cur_eaters < max_eaters {
-				cur_eaters++
-				permission <- true
-			}
+	cur_eaters := 2
+	permission <- true
+	permission <- true
+	for range finished {
+		cur_eaters--
+		if cur_eaters < max_eaters {
+			cur_eaters++
+			permission <- true
 		}
 	}
+	fmt.Println("dinner party over")
+	wg.Done()
 }
 
 func main() {
@@ -60,5 +61,8 @@ func main() {
 		go philos[i].eat(i)
 	}
 	go host(2)
+	wg.Wait()
+	close(finished)
+	wg.Add(1)
 	wg.Wait()
 }
