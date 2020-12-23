@@ -45,8 +45,7 @@ func host(max_eaters int) {
 }
 
 func main() {
-	max_eaters := 2
-	permission = make(chan bool, max_eaters)
+	permission = make(chan bool, 2)
 	finished = make(chan bool)
 	CSticks := make([]*ChopS, 5)
 	for i := 0; i < 5; i++ {
@@ -60,6 +59,6 @@ func main() {
 	for i := 0; i < 5; i++ {
 		go philos[i].eat(i)
 	}
-	go host(max_eaters)
+	go host(2)
 	wg.Wait()
 }
